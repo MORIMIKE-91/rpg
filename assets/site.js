@@ -25,3 +25,22 @@ if (toggle && nav) {
 document.querySelectorAll('[data-year]').forEach(el => {
   el.textContent = new Date().getFullYear();
 });
+
+const contactForm = document.querySelector('#contact-form');
+if (contactForm) {
+  contactForm.addEventListener('submit', event => {
+    event.preventDefault();
+    if (!contactForm.reportValidity()) return;
+
+    const data = new FormData(contactForm);
+    const name = String(data.get('name') || '').trim();
+    const email = String(data.get('email') || '').trim();
+    const subject = String(data.get('subject') || '').trim();
+    const message = String(data.get('message') || '').trim();
+    const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
+    const draft = `mailto:contact@rpgamesltd.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    document.querySelector('#contact-form-status').hidden = false;
+    window.location.href = draft;
+  });
+}
